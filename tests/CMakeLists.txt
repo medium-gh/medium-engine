@@ -1,0 +1,11 @@
+# Each suite is one executable that prints what failed and exits non-zero. None opens a window.
+function(medium_test name source)
+ add_executable(medium_${name}_tests ${source})
+ target_link_libraries(medium_${name}_tests PRIVATE medium_core)
+ medium_target(medium_${name}_tests)
+ add_test(NAME ${name} COMMAND medium_${name}_tests ${ARGN})
+endfunction()
+medium_test(solid_index solid_index.cpp)
+medium_test(residency residency.cpp)
+medium_test(audio audio.cpp ${CMAKE_CURRENT_SOURCE_DIR}/data)
+medium_test(profiling profile.cpp)

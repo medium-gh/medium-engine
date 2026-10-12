@@ -1,0 +1,44 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  # medium_core and its suites: no window, no GPU, no shader compiler.
+  core:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+        preset: [core]
+        include:
+          - os: ubuntu-24.04
+            preset: asan
+    steps:
+      - uses: actions/checkout@v4
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+      - if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - run: cmake --preset ${{ matrix.preset }}
+      - run: cmake --build --preset ${{ matrix.preset }}
+      - run: ctest --preset ${{ matrix.preset }} -V
+
+  # The renderer and the example, compiled. Not run: the hosted runners have no GPU.
+  graphics:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build glslang-tools libx11-dev libxext-dev libxrandr-dev \
+            libxcursor-dev libxi-dev libxfixes-dev libxss-dev libxtst-dev libwayland-dev \
+            libxkbcommon-dev libegl1-mesa-dev libgl1-mesa-dev libasound2-dev libpulse-dev
+      - run: cmake --preset debug
+      - run: cmake --build --preset debug
+      - run: ctest --preset debug -V
+
+  formatting:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y clang-format
+      - run: clang-format --dry-run -Werror $(git ls-files '*.cpp' '*.hpp')

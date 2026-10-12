@@ -5,81 +5,45 @@
       "name": "debug",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
     },
     {
       "name": "release",
       "inherits": "debug",
       "binaryDir": "${sourceDir}/build/release",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     },
     {
       "name": "core",
       "inherits": "debug",
       "binaryDir": "${sourceDir}/build/core",
-      "cacheVariables": {
-        "MEDIUM_GRAPHICS": "OFF"
-      }
+      "cacheVariables": { "MEDIUM_GRAPHICS": "OFF" }
     },
     {
       "name": "asan",
       "inherits": "core",
       "binaryDir": "${sourceDir}/build/asan",
-      "cacheVariables": {
-        "MEDIUM_SANITIZERS": "ON"
-      }
+      "cacheVariables": { "MEDIUM_SANITIZERS": "ON" }
+    },
+    {
+      "name": "network",
+      "inherits": "core",
+      "binaryDir": "${sourceDir}/build/network",
+      "cacheVariables": { "MEDIUM_NETWORK": "ON", "CMAKE_POLICY_VERSION_MINIMUM": "3.5" }
     }
   ],
   "buildPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug"
-    },
-    {
-      "name": "release",
-      "configurePreset": "release"
-    },
-    {
-      "name": "core",
-      "configurePreset": "core"
-    },
-    {
-      "name": "asan",
-      "configurePreset": "asan"
-    }
+    { "name": "debug", "configurePreset": "debug" },
+    { "name": "release", "configurePreset": "release" },
+    { "name": "core", "configurePreset": "core" },
+    { "name": "asan", "configurePreset": "asan" },
+    { "name": "network", "configurePreset": "network" }
   ],
   "testPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug",
-      "output": {
-        "outputOnFailure": true
-      }
-    },
-    {
-      "name": "release",
-      "configurePreset": "release",
-      "output": {
-        "outputOnFailure": true
-      }
-    },
-    {
-      "name": "core",
-      "configurePreset": "core",
-      "output": {
-        "outputOnFailure": true
-      }
-    },
-    {
-      "name": "asan",
-      "configurePreset": "asan",
-      "output": {
-        "outputOnFailure": true
-      }
-    }
+    { "name": "debug", "configurePreset": "debug", "output": { "outputOnFailure": true } },
+    { "name": "release", "configurePreset": "release", "output": { "outputOnFailure": true } },
+    { "name": "core", "configurePreset": "core", "output": { "outputOnFailure": true } },
+    { "name": "asan", "configurePreset": "asan", "output": { "outputOnFailure": true } },
+    { "name": "network", "configurePreset": "network", "output": { "outputOnFailure": true } }
   ]
 }

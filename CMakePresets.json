@@ -18,8 +18,16 @@
       }
     },
     {
-      "name": "asan",
+      "name": "core",
       "inherits": "debug",
+      "binaryDir": "${sourceDir}/build/core",
+      "cacheVariables": {
+        "MEDIUM_GRAPHICS": "OFF"
+      }
+    },
+    {
+      "name": "asan",
+      "inherits": "core",
       "binaryDir": "${sourceDir}/build/asan",
       "cacheVariables": {
         "MEDIUM_SANITIZERS": "ON"
@@ -34,6 +42,10 @@
     {
       "name": "release",
       "configurePreset": "release"
+    },
+    {
+      "name": "core",
+      "configurePreset": "core"
     },
     {
       "name": "asan",
@@ -51,6 +63,13 @@
     {
       "name": "release",
       "configurePreset": "release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "core",
+      "configurePreset": "core",
       "output": {
         "outputOnFailure": true
       }
